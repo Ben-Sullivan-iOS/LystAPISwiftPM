@@ -1,3 +1,3 @@
 # LystAPIService
 
-A description of this package.
+SwiftPM Framework to be used with LystTestProject
