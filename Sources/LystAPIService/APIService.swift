@@ -9,14 +9,14 @@
 import Foundation
 
 public protocol APIServiceType {
-  func getShoeCategories(forGender gender: Gender, completion: @escaping (Result<FilterResult, Error>) -> ())
+  func getShoeCategories(forGender gender: Gender, completion: @escaping (Result<FilterNetworkResult, Error>) -> ())
   func getProducts(forProductTypes productTypes: [ProductCategory], completion: @escaping (Result<(allCategories: [String], productResult: ProductResult), Error>) -> ())
 }
 
 public struct APIService: APIServiceType {
   
   public init() { }
-  public func getShoeCategories(forGender gender: Gender, completion: @escaping (Result<FilterResult, Error>) -> ()) {
+  public func getShoeCategories(forGender gender: Gender, completion: @escaping (Result<FilterNetworkResult, Error>) -> ()) {
     guard let request = APIRequestConstructor.request(
       for: .filter,
       method: .get,
@@ -37,7 +37,7 @@ public struct APIService: APIServiceType {
     let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
       
       do {
-        let categories = try JSONDecoder().decode(FilterResult.self, from: data!)
+        let categories = try JSONDecoder().decode(FilterNetworkResult.self, from: data!)
         completion(Result.success(categories))
       } catch {
         print(error)

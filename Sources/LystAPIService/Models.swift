@@ -7,15 +7,19 @@
 
 import Foundation
 
-public struct FilterResult: Codable {
-  public let filters: [ProductCategory]
+public struct FilterNetworkResult: Codable {
+  public let productCategories: [ProductCategory]
+  
+  enum CodingKeys: String, CodingKey {
+    case productCategories = "filters"
+  }
 }
 
 public struct ProductResult: Codable {
-  public let products: [Product]
+  public let products: [ProductNetworkModel]
 }
 
-public struct Product: Codable {
+public struct ProductNetworkModel: Codable {
   public let price: String
   public let title: String
   public let image: String
