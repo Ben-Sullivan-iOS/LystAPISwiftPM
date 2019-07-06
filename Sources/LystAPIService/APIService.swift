@@ -9,14 +9,14 @@
 import Foundation
 
 public protocol APIServiceType {
-  func getShoeCategories(forGender gender: Gender, completion: @escaping (Result<FilterNetworkResult, Error>) -> ())
-  func getProducts(forProductTypes productTypes: [ProductCategory], completion: @escaping (Result<(allCategories: [String], productResult: ProductResult), Error>) -> ())
+  func getShoeCategories(forGender gender: Gender, completion: @escaping (Result<FilterNetworkModel, Error>) -> ())
+  func getProducts(forProductTypes productTypes: [ProductCategoryNetworkModel], completion: @escaping (Result<(allCategories: [String], productResult: ProductContainerNetworkModel), Error>) -> ())
 }
 
 public struct APIService: APIServiceType {
   
   public init() { }
-  public func getShoeCategories(forGender gender: Gender, completion: @escaping (Result<FilterNetworkResult, Error>) -> ()) {
+  public func getShoeCategories(forGender gender: Gender, completion: @escaping (Result<FilterNetworkModel, Error>) -> ()) {
     guard let request = APIRequestConstructor.request(
       for: .filter,
       method: .get,
@@ -37,7 +37,7 @@ public struct APIService: APIServiceType {
     let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
       
       do {
-        let categories = try JSONDecoder().decode(FilterNetworkResult.self, from: data!)
+        let categories = try JSONDecoder().decode(FilterNetworkModel.self, from: data!)
         completion(Result.success(categories))
       } catch {
         print(error)
@@ -47,7 +47,7 @@ public struct APIService: APIServiceType {
     task.resume()
   }
   
-  public func getProducts(forProductTypes productTypes: [ProductCategory], completion: @escaping (Result<(allCategories: [String], productResult: ProductResult), Error>) -> ()) {
+  public func getProducts(forProductTypes productTypes: [ProductCategoryNetworkModel], completion: @escaping (Result<(allCategories: [String], productResult: ProductContainerNetworkModel), Error>) -> ()) {
     
     var params = [APIParameter]()
     
@@ -74,7 +74,7 @@ public struct APIService: APIServiceType {
     let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
       
       do {
-        let products = try JSONDecoder().decode(ProductResult.self, from: data!)
+        let products = try JSONDecoder().decode(ProductContainerNetworkModel.self, from: data!)
         
         print(products)
         completion(Result.success((allCategories: allCategories, productResult: products)))

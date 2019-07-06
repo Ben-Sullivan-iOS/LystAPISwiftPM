@@ -7,15 +7,15 @@
 
 import Foundation
 
-public struct FilterNetworkResult: Codable {
-  public let productCategories: [ProductCategory]
+public struct FilterNetworkModel: Codable {
+  public let productCategories: [ProductCategoryNetworkModel]
   
   enum CodingKeys: String, CodingKey {
     case productCategories = "filters"
   }
 }
 
-public struct ProductResult: Codable {
+public struct ProductContainerNetworkModel: Codable {
   public let products: [ProductNetworkModel]
 }
 
@@ -25,7 +25,7 @@ public struct ProductNetworkModel: Codable {
   public let image: String
 }
 
-public struct ProductCategory: Codable {
+public struct ProductCategoryNetworkModel: Codable {
   public init(value: String) {
     self.value = value
   }
